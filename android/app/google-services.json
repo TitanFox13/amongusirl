@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "250851267091",
+    "firebase_url": "https://amongusirl-782a8-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "amongusirl-782a8",
+    "storage_bucket": "amongusirl-782a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:250851267091:android:8a149c71c999abf29325e6",
+        "android_client_info": {
+          "package_name": "com.example.among_us_irl"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0V1KeOFXY47Hvur8vSJUmniIlEzOX-A0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
