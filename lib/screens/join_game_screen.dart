@@ -29,56 +29,58 @@ class _JoinGameScreenState extends State<JoinGameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer(
-        builder: (context, ref, child) {
-          return Column(
-            children: <Widget>[
-              MyTextField(
-                controller: _nameController,
-                text: 'Name',
-              ),
-              MyElevatedButton(
-                  onPressed: () async {
-                    String? name = _nameController.text;
-                    if (name.isNotEmpty) {
-                      await ref.read(currentGameProvider.notifier).createGame(name);
-                      Navigator.pushNamed(context, CreateGameScreen.routeName);
-                    } _nameController.text = 'PLEASE ENTER A NAME';
-                  },
-                  text: 'Create game'),
-              MyTextField(
-                controller: _gameIdController,
-                text: 'Game code',
-              ),
-              MyElevatedButton(
-                  onPressed: () async {
-                    String? code = _gameIdController.text.toUpperCase();
-                    String? name = _nameController.text;
-                    if (await ref
-                        .read(currentGameProvider.notifier)
-                        .codeValid(code)) {
+      body: SafeArea(
+        child: Consumer(
+          builder: (context, ref, child) {
+            return Column(
+              children: <Widget>[
+                MyTextField(
+                  controller: _nameController,
+                  text: 'Name',
+                ),
+                MyElevatedButton(
+                    onPressed: () async {
+                      String? name = _nameController.text;
                       if (name.isNotEmpty) {
-                        if (name.length < 20) {
-                          await ref
-                              .read(currentGameProvider.notifier)
-                              .joinGame(code, name);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      ConnectionSuccessfulScreen(
-                                          gameCode: code)));
+                        await ref.read(currentGameProvider.notifier).createGame(name);
+                        Navigator.pushNamed(context, CreateGameScreen.routeName);
+                      } _nameController.text = 'PLEASE ENTER A NAME';
+                    },
+                    text: 'Create game'),
+                MyTextField(
+                  controller: _gameIdController,
+                  text: 'Game code',
+                ),
+                MyElevatedButton(
+                    onPressed: () async {
+                      String? code = _gameIdController.text.toUpperCase();
+                      String? name = _nameController.text;
+                      if (await ref
+                          .read(currentGameProvider.notifier)
+                          .codeValid(code)) {
+                        if (name.isNotEmpty) {
+                          if (name.length < 20) {
+                            await ref
+                                .read(currentGameProvider.notifier)
+                                .joinGame(code, name);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        ConnectionSuccessfulScreen(
+                                            gameCode: code)));
+                          }
+                          _nameController.text = 'NAME TOO LONG';
                         }
-                        _nameController.text = 'NAME TOO LONG';
+                        _nameController.text = 'PLEASE ENTER A NAME';
                       }
-                      _nameController.text = 'PLEASE ENTER A NAME';
-                    }
-                    _gameIdController.text = 'INVALID CODE';
-                  },
-                  text: 'Join game'),
-            ],
-          );
-        },
+                      _gameIdController.text = 'INVALID CODE';
+                    },
+                    text: 'Join game'),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

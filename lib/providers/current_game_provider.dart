@@ -82,7 +82,7 @@ class CurrentGameNotifier extends Notifier<Game> {
 
   Future<bool> codeValid(String code) async {
     final DatabaseReference ref = FirebaseDatabase.instance.ref('games');
-    final snapshot = await ref.child(code).get();
+    final snapshot = (await ref.child(code).once()).snapshot;
     if (snapshot.exists) return true;
     return false;
   }
@@ -110,7 +110,7 @@ class CurrentGameNotifier extends Notifier<Game> {
       await _dbRef.child('quests/$quest').remove();
 
   Future<int> getImpostorCount() async {
-    DataSnapshot countData = await _dbRef.child('impostor_count').get();
+    DataSnapshot countData = (await _dbRef.child('impostor_count').once()).snapshot;
     int count = countData.value as int;
     return count;
   }
@@ -128,7 +128,8 @@ class CurrentGameNotifier extends Notifier<Game> {
   }
 
   Future<int> getQuestCount() async {
-    DataSnapshot countData = await _dbRef.child('number_of_quests').get();
+    DataSnapshot countData = (await _dbRef.child('number_of_quests').once()).snapshot;
+    print(countData.value);
     int count = countData.value as int;
     return count;
   }
@@ -146,7 +147,7 @@ class CurrentGameNotifier extends Notifier<Game> {
   }
 
   Future<void> startGame() async {
-    final DataSnapshot snapshot = await _dbRef.get();
+    final DataSnapshot snapshot = (await _dbRef.once()).snapshot;
     final Map data = snapshot.value as Map;
     final List players = (data['players'] as Map).keys.toList();
     final List quests = (data['quests'] as Map).keys.toList();
@@ -175,7 +176,7 @@ class CurrentGameNotifier extends Notifier<Game> {
   }
 
   Future<List> getQuests() async {
-    final DataSnapshot questSnapshot = await _questsRef.get();
+    final DataSnapshot questSnapshot = (await _questsRef.once()).snapshot;
     if (questSnapshot.exists) {
       final Map questsMap = questSnapshot.value as Map;
       final List quests = questsMap.keys.toList();
@@ -217,7 +218,7 @@ class CurrentGameNotifier extends Notifier<Game> {
   }
 
   Future<void> checkForQuestWin() async {
-    DataSnapshot snapshot = await _dbRef.child('players').get();
+    DataSnapshot snapshot = (await _dbRef.child('players').once()).snapshot;
     Map players = snapshot.value as Map;
     List completed = [];
     for (String player in state.alive) {
@@ -232,11 +233,11 @@ class CurrentGameNotifier extends Notifier<Game> {
 
   Future<void> checkForKillWin() async {
     List impostors = await getImpostors();
-    DataSnapshot countSnapshot = await _dbRef.child('impostor_count').get();
+    DataSnapshot countSnapshot = (await _dbRef.child('impostor_count').once()).snapshot;
     int impostorCount = countSnapshot.value as int;
     List aliveImpostors = [];
     for (String impostor in impostors) {
-      DataSnapshot snapshot = await _dbRef.child('players/$impostor/alive').get();
+      DataSnapshot snapshot = (await _dbRef.child('players/$impostor/alive').once()).snapshot;
       bool alive = snapshot.value as bool;
       if (alive == true) aliveImpostors.add(impostor);
     }
@@ -247,13 +248,13 @@ class CurrentGameNotifier extends Notifier<Game> {
 
   Future<Map> getPlayerQuests() async {
     DataSnapshot snapshot =
-        await _dbRef.child('players/$_playerName/quests').get();
+        (await _dbRef.child('players/$_playerName/quests').once()).snapshot;
     Map quests = snapshot.value as Map;
     return quests;
   }
 
   Future<List> getImpostors() async {
-    DataSnapshot snapshot = await _dbRef.child('players').get();
+    DataSnapshot snapshot = (await _dbRef.child('players').once()).snapshot;
     Map playersMap = snapshot.value as Map;
     List<String> impostors = [];
     for (String player in playersMap.keys) {

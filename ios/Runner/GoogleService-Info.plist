@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyCSX-YjbpaqeJsooEVM6qrI7FfEW5dayOM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>250851267091</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.amongUsIrl</string>
+	<key>PROJECT_ID</key>
+	<string>amongusirl-782a8</string>
+	<key>STORAGE_BUCKET</key>
+	<string>amongusirl-782a8.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:250851267091:ios:9751b26e9113f5359325e6</string>
+	<key>DATABASE_URL</key>
+	<string>https://amongusirl-782a8-default-rtdb.europe-west1.firebasedatabase.app</string>
+</dict>
+</plist>
