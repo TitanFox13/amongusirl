@@ -33,6 +33,7 @@ class _AddQuestScreenState extends State<AddQuestScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(_gameCode),
       ),
