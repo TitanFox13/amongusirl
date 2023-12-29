@@ -23,6 +23,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+      appBarTheme: const AppBarTheme(color: Colors.deepOrange)),
       home: const JoinGameScreen(),
       routes: {
         JoinGameScreen.routeName: (context) => const JoinGameScreen(),

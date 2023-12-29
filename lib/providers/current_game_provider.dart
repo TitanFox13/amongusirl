@@ -110,7 +110,8 @@ class CurrentGameNotifier extends Notifier<Game> {
       await _dbRef.child('quests/$quest').remove();
 
   Future<int> getImpostorCount() async {
-    DataSnapshot countData = (await _dbRef.child('impostor_count').once()).snapshot;
+    DataSnapshot countData =
+        (await _dbRef.child('impostor_count').once()).snapshot;
     int count = countData.value as int;
     return count;
   }
@@ -128,7 +129,8 @@ class CurrentGameNotifier extends Notifier<Game> {
   }
 
   Future<int> getQuestCount() async {
-    DataSnapshot countData = (await _dbRef.child('number_of_quests').once()).snapshot;
+    DataSnapshot countData =
+        (await _dbRef.child('number_of_quests').once()).snapshot;
     print(countData.value);
     int count = countData.value as int;
     return count;
@@ -208,7 +210,9 @@ class CurrentGameNotifier extends Notifier<Game> {
       }
     }
     if (completed.length == quests.values.length) {
-      await _dbRef.child('players/$_playerName').update({'quests_completed': true});
+      await _dbRef
+          .child('players/$_playerName')
+          .update({'quests_completed': true});
     }
     await checkForQuestWin();
   }
@@ -233,11 +237,13 @@ class CurrentGameNotifier extends Notifier<Game> {
 
   Future<void> checkForKillWin() async {
     List impostors = await getImpostors();
-    DataSnapshot countSnapshot = (await _dbRef.child('impostor_count').once()).snapshot;
+    DataSnapshot countSnapshot =
+        (await _dbRef.child('impostor_count').once()).snapshot;
     int impostorCount = countSnapshot.value as int;
     List aliveImpostors = [];
     for (String impostor in impostors) {
-      DataSnapshot snapshot = (await _dbRef.child('players/$impostor/alive').once()).snapshot;
+      DataSnapshot snapshot =
+          (await _dbRef.child('players/$impostor/alive').once()).snapshot;
       bool alive = snapshot.value as bool;
       if (alive == true) aliveImpostors.add(impostor);
     }
@@ -271,7 +277,24 @@ class CurrentGameNotifier extends Notifier<Game> {
 
   bool isAdmin() => _isAdmin;
 
-  Future<void> resetGame() async {}
+  Future<void> resetGame() async {
+    await _dbRef.set({
+      'crewmates_win': false,
+      'impostors_win': false,
+      'meeting': null,
+      'running': false,
+    });
+    DataSnapshot snapshot = (await _dbRef.child('players').once()).snapshot;
+    List players = (snapshot.value as Map).keys.toList();
+    for (String player in players) {
+      await _dbRef.child('players/$player').update({
+        'impostor': false,
+        'alive': true,
+        'quests': {},
+        'quests_completed': false,
+      });
+    }
+  }
 }
 
 final currentGameProvider =

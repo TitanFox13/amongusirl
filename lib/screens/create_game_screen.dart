@@ -25,18 +25,37 @@ class CreateGameScreen extends ConsumerWidget {
         title: Text(title),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Text('Quests:'),
           SizedBox(
-            height: MediaQuery.of(context).size.height / 2,
-            child: ListView.builder(
-              itemCount: quests.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  title: Text(quests[index]!),
-                );
-              },
-              shrinkWrap: false,
+            height: MediaQuery.of(context).size.height / 15,
+            child: const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: FittedBox(
+                fit: BoxFit.fitHeight,
+                child: Text(
+                  'Quests:',
+                  style: TextStyle(color: Colors.deepOrange),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.height / 2.5,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20 , 0, 20, 20),
+              child: Material(
+                child: ListView.builder(
+                  itemCount: quests.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                      title: Text(quests[index]!),
+                    );
+                  },
+                  shrinkWrap: false,
+                ),
+              ),
             ),
           ),
           MyElevatedButton(
@@ -86,8 +105,10 @@ class CreateGameScreen extends ConsumerWidget {
           MyElevatedButton(
               onPressed: () async {
                 await ref.read(currentGameProvider.notifier).startGame();
-                String name = ref.read(currentGameProvider.notifier).getPlayerName();
-                List impostors = await ref.read(currentGameProvider.notifier).getImpostors();
+                String name =
+                    ref.read(currentGameProvider.notifier).getPlayerName();
+                List impostors =
+                    await ref.read(currentGameProvider.notifier).getImpostors();
                 if (impostors.contains(name)) {
                   Navigator.of(context).pushNamed(ImpostorScreen.routeName);
                 } else {

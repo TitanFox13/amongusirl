@@ -16,6 +16,7 @@ class AddQuestScreen extends StatefulWidget {
 class _AddQuestScreenState extends State<AddQuestScreen> {
   final TextEditingController _questController = TextEditingController();
   late final String _gameCode;
+  String errorText = '';
 
   @override
   void initState() {
@@ -37,7 +38,7 @@ class _AddQuestScreenState extends State<AddQuestScreen> {
       ),
       body: Column(
         children: <Widget>[
-          MyTextField(controller: _questController, text: 'Quest'),
+          MyTextField(controller: _questController, text: 'Quest', errorText: errorText,),
           Consumer(
             builder: (context, ref, child) {
               return MyElevatedButton(
@@ -47,7 +48,9 @@ class _AddQuestScreenState extends State<AddQuestScreen> {
                           .read(currentGameProvider.notifier)
                           .addQuest(_questController.text);
                       _questController.text = '';
-                    }
+                    } setState(() {
+                      errorText = 'Please enter a quest name';
+                    });
                   },
                   text: 'Add Quest');
             },

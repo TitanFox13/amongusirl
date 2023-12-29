@@ -18,6 +18,15 @@ class JoinGameScreen extends StatefulWidget {
 class _JoinGameScreenState extends State<JoinGameScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _gameIdController = TextEditingController();
+  String? nameErrorText;
+  String? codeErrorText;
+
+  @override
+  void initState() {
+    nameErrorText = '';
+    codeErrorText = '';
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -29,14 +38,22 @@ class _JoinGameScreenState extends State<JoinGameScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Consumer(
           builder: (context, ref, child) {
             return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 MyTextField(
                   controller: _nameController,
                   text: 'Name',
+                  errorText: nameErrorText!,
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 20,
                 ),
                 MyElevatedButton(
                     onPressed: () async {
@@ -44,12 +61,21 @@ class _JoinGameScreenState extends State<JoinGameScreen> {
                       if (name.isNotEmpty) {
                         await ref.read(currentGameProvider.notifier).createGame(name);
                         Navigator.pushNamed(context, CreateGameScreen.routeName);
-                      } _nameController.text = 'PLEASE ENTER A NAME';
+                      } setState(() {
+                        nameErrorText = 'Please enter a name';
+                      });
                     },
                     text: 'Create game'),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 20,
+                ),
                 MyTextField(
                   controller: _gameIdController,
                   text: 'Game code',
+                  errorText: codeErrorText!,
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 20,
                 ),
                 MyElevatedButton(
                     onPressed: () async {
@@ -70,11 +96,17 @@ class _JoinGameScreenState extends State<JoinGameScreen> {
                                         ConnectionSuccessfulScreen(
                                             gameCode: code)));
                           }
-                          _nameController.text = 'NAME TOO LONG';
+                          setState(() {
+                            nameErrorText = 'Name too long';
+                          });
                         }
-                        _nameController.text = 'PLEASE ENTER A NAME';
+                        setState(() {
+                          nameErrorText = 'Please enter a name';
+                        });
                       }
-                      _gameIdController.text = 'INVALID CODE';
+                      setState(() {
+                        codeErrorText = 'Invalid code';
+                      });
                     },
                     text: 'Join game'),
               ],
